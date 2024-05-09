@@ -1,19 +1,19 @@
 <template>
-  <div id="part1">首屏</div>
+  <div id="part1">
+    <img src="../assets/image/first.webp" alt="" />
+  </div>
 </template>
 <script setup lang="ts"></script>
-<style lang="scss">
+<style lang="scss" scoped>
 #part1 {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  background-color: lightblue;
+  // height: 100vh;
+  img {
+    width: 100%;
+  }
 }
 @media screen and (max-width: 1380px) {
   #part1 {
-    height: 400px;
+    // height: 400px;
   }
 }
 </style>

@@ -4,7 +4,7 @@
       <Header :nav="components" :container-ref="containerRef"></Header>
     </div>
     <div id="containerBox1" class="container" ref="containerRef">
-      <div class="scaleBox">
+      <div class="scaleBox" ref="scaleBoxRef">
         <div
           class="part-wrapper"
           v-for="item in components"
@@ -18,6 +18,40 @@
         </div>
       </div>
     </div>
+    <div class="toTop" @click="backTop" v-show="showToTop">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        fill="none"
+        version="1.1"
+        width="45"
+        height="45"
+        viewBox="0 0 45 45"
+      >
+        <g>
+          <g>
+            <ellipse
+              cx="22.5"
+              cy="22.5"
+              rx="21.5"
+              ry="21.5"
+              fill-opacity="0"
+              stroke-opacity="1"
+              stroke="#258398"
+              fill="none"
+              stroke-width="2"
+            />
+          </g>
+          <g transform="matrix(0,-1,1,0,-17.864013671875,47.135986328125)">
+            <path
+              d="M15.635986328125,38.86396C15.083702328125,38.86396,14.635986328125,39.31167,14.635986328125,39.86396C14.635986328125,40.41624,15.083701328125,40.86396,15.635986328125,40.86396C15.635986328125,40.86396,15.635986328125,38.86396,15.635986328125,38.86396C15.635986328125,38.86396,15.635986328125,38.86396,15.635986328125,38.86396ZM33.843086328125,40.57107C34.233586328125,40.18055,34.233586328125,39.547380000000004,33.843086328125,39.15686C33.843086328125,39.15686,27.479086328125,32.792897,27.479086328125,32.792897C27.088586328125,32.4023675,26.455486328124998,32.4023675,26.064886328125,32.792897C25.674386328125,33.183417,25.674386328125,33.81658,26.064886328125,34.20711C26.064886328125,34.20711,31.721786328125,39.86396,31.721786328125,39.86396C31.721786328125,39.86396,26.064886328125,45.5208,26.064886328125,45.5208C25.674386328125,45.9113,25.674386328125,46.5445,26.064886328125,46.935C26.455486328124998,47.3256,27.088586328125,47.3256,27.479086328125,46.935C27.479086328125,46.935,33.843086328125,40.57107,33.843086328125,40.57107C33.843086328125,40.57107,33.843086328125,40.57107,33.843086328125,40.57107ZM15.635986328125,40.86396C15.635986328125,40.86396,33.135986328125,40.86397,33.135986328125,40.86397C33.135986328125,40.86397,33.135986328125,38.86396,33.135986328125,38.86396C33.135986328125,38.86396,15.635986328125,38.86396,15.635986328125,38.86396C15.635986328125,38.86396,15.635986328125,40.86396,15.635986328125,40.86396C15.635986328125,40.86396,15.635986328125,40.86396,15.635986328125,40.86396Z"
+              fill="#258398"
+              fill-opacity="1"
+            />
+          </g>
+        </g>
+      </svg>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -28,8 +62,12 @@ import Part3 from "@/components/Part3.vue";
 import Part4 from "@/components/Part4.vue";
 import Part5 from "@/components/Part5.vue";
 
-import { onMounted, ref } from "vue";
-const containerRef = ref(null);
+import Swiper from "swiper";
+
+import { onMounted, ref, type Ref } from "vue";
+const containerRef: Ref = ref(null);
+const scaleBoxRef: Ref = ref(null);
+const showToTop = ref(false);
 const componentMap: {
   [key: string]: typeof Part1;
 } = {
@@ -72,20 +110,45 @@ const components: Array<{
   },
 ];
 
-const containerWidth = 1400;
+const containerWidth = 1460;
 
 function scaleToFix() {
   if (window.innerWidth > containerWidth) return;
   let scaleBoxes = document.querySelectorAll("div.scaleBox");
   let scale = window.innerWidth / containerWidth;
-  console.log(scale.toFixed(2));
   scaleBoxes.forEach((el) => {
-    (el as HTMLElement).style.zoom = scale;
+    (el as HTMLElement).style.cssText = "zoom:" + scale;
   });
 }
 
+const backTop = () => {
+  if (scaleBoxRef.value) {
+    scaleBoxRef.value.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest",
+    }); // 开启平滑滚动动画
+  }
+};
+
+const initSwiper = () => {
+  new Swiper(".swiper", {
+    slidesPerView: "auto",
+    freeMode: true,
+    grabCursor: true,
+  });
+};
+
 onMounted(() => {
   scaleToFix();
+  initSwiper();
+  (containerRef.value as HTMLElement).addEventListener("scroll", (e) => {
+    if ((containerRef.value as HTMLElement).scrollTop == 0) {
+      showToTop.value = false;
+    } else {
+      showToTop.value = true;
+    }
+  });
 });
 </script>
 <style lang="scss" scoped>
@@ -101,13 +164,42 @@ onMounted(() => {
   overflow: hidden;
   .scaleBox {
     transform-origin: top left;
-    width: 1380px;
+    width: 1440px;
+    box-sizing: content-box;
+    // padding: 0 200px;
   }
   .container {
     width: fit-content;
+    position: relative;
     flex: 1;
     // overflow: scroll;
     overflow-x: hidden;
+  }
+  .toTop {
+    position: fixed;
+    // background-color: yellow;
+    z-index: 10000;
+    width: 40px;
+    height: 40px;
+    bottom: 40px;
+    right: 10vw;
+    cursor: pointer;
+    svg {
+      path,
+      ellipse {
+        transition: all 0.4s;
+      }
+    }
+    &:hover {
+      svg {
+        path {
+          fill: darken($color: #06514c, $amount: 0.5);
+        }
+        ellipse {
+          stroke: darken($color: #06514c, $amount: 0.5);
+        }
+      }
+    }
   }
 }
 </style>

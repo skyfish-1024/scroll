@@ -1,0 +1,49 @@
+//板块顶部
+.part-top {
+  padding: 56px 0;
+  .part-top-title {
+    text-align: center;
+    font-size: 24px;
+    color: #033531;
+    font-weight: bolder;
+  }
+  .part-top-content {
+    margin: 20px 0px;
+    font-size: 16px;
+    font-weight: 250;
+    line-height: 30px;
+    color: rgba(3, 53, 49, 0.8);
+  }
+}
+
+//子版块header
+.sup-part-header {
+  display: flex;
+  align-items: flex-end;
+  .title {
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0.72px;
+  }
+  .sub-title {
+    font-size: 16px;
+    font-weight: 250;
+    height: fit-content;
+    line-height: 16px;
+    margin-left: 10px;
+  }
+}
+//下划线样式
+.text-line {
+  position: absolute;
+  font-size: 16px;
+  font-weight: 250;
+  line-height: 28px;
+  letter-spacing: 0.48px;
+  color: #033531;
+  border-bottom: 4px solid #09968c;
+  width: 200px;
+  padding-bottom: 10px;
+  z-index: -1;
+}

@@ -1,0 +1,53 @@
+.swiper-item {
+  all: unset;
+  display: block;
+  position: relative;
+  transition: all 0.3s;
+  width: 366px !important;
+  min-width: 366px !important;
+  height: 452px !important;
+  overflow: hidden;
+  transform-origin: bottom center;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.12);
+    .to {
+      background-color: rgba($color: #fff, $alpha: 0.2);
+      border-radius: 50px;
+    }
+  }
+  .pic {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .to {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    z-index: 1;
+    left: 33px;
+    bottom: 54px;
+  }
+  .name {
+    font-size: 20px;
+    line-height: 48px;
+    letter-spacing: 0.6px;
+    color: #ffffff;
+    position: absolute;
+    z-index: 1;
+    left: 33px;
+    top: 30px;
+  }
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    opacity: 0.5;
+  }
+}

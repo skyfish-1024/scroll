@@ -14,12 +14,9 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import Anchor from "./Anchor.vue";
-interface navObj {
-  id: string;
-  name: string;
-  component: string;
-}
+import Anchor from "./common/Anchor.vue";
+import { type navObj } from "./common/nav";
+
 const props = defineProps({
   nav: {
     type: Array<navObj>,
@@ -33,7 +30,9 @@ const props = defineProps({
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 0 20px;
   height: 60px;
+  box-sizing: border-box;
   .logo {
     width: 100px;
     img {
