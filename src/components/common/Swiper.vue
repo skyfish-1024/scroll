@@ -41,12 +41,6 @@ function initSwiper(container: HTMLElement, align = "center") {
   while (children.length) {
     let div = document.createElement("div");
     div.appendChild(children[0]);
-    div.tagName;
-    if (children[0]?.tagName == "A") {
-      children[0].addEventListener("click", () => {
-        console.log("ff");
-      });
-    }
     div.classList.add("swiper-wrapper-slide");
     newChildren.push(div);
   }
@@ -166,12 +160,11 @@ function mousemoveHandler(e: MouseEvent | TouchEvent) {
   move(dx);
 }
 function handleClick(e: PointerEvent) {
-  if (pc) {
-    e.preventDefault();
-  }
   if (moved) {
-    // e.stopPropagation();
-    // e.preventDefault();
+    if (pc) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
   } else {
     moved = false;
   }
