@@ -7,8 +7,7 @@
           仿真模型利用计算机技术对传统物理模型进行模拟，学生可以在学习过程中“真实”地感知模型的实际结构。这极大地改善了传统教学中理论与实践差异过大的问题。学生也可以在动手实践的过程中获得参与感和满足感，提升学习兴趣。
         </p>
         <p class="part-top-content-p">
-          我团队可以为教材实现简单模型的定制化，同时，在过去的项目中，我们也积累了一些模板类项目，如您有类似需求可以使用模板进行模型的快速实现；此外，我们还可以完成模型的部署任务，即对有源文件的模型提供部署到数字教材的服务。
-          目前我平台技术团队总计研发了3种不同类型的游戏，包含编程类、益智类、答题闯关类，其中具有代表性的游戏有通过编写代码进行板块移动的编程类游戏”浮动布局：、益智类拼图游戏“电路拼图”、答题闯关类游戏“挑战理财师、数学知识类“黄金分割比”等。
+          我团队可以为教材实现简单模型的定制化，同时，在过去的项目中，我们也积累了一些模板类项目，如您有类似需求可以使用模板进行模型的快速实现
         </p>
       </div>
     </div>
@@ -33,7 +32,7 @@
         <img src="@/assets/image/s-5-1.webp" alt="" />
       </div>
     </div>
-    <Swiper class="swiper-slide" align="flex-start">
+    <Swiper class="swiper-slide" align="start">
       <div class="swiper-slide" style="min-width: 1950px; width: 1950px">
         <img
           src="@/assets/image/s-6.svg"
@@ -41,7 +40,7 @@
         />
       </div>
     </Swiper>
-    <Swiper align="flex-start">
+    <Swiper align="start">
       <div class="swiper-slide" style="min-width: 1950px; width: 1950px">
         <img
           src="@/assets/image/s-7.svg"

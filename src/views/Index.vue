@@ -3,11 +3,13 @@
     <div class="wrapper header scaleBox">
       <Header :nav="components" :container-ref="containerRef"></Header>
     </div>
+
     <div id="containerBox1" class="container" ref="containerRef">
-      <div class="scaleBox" ref="scaleBoxRef">
+      <div class="" ref="scaleBoxRef">
         <div
           class="part-wrapper"
-          v-for="item in components"
+          :class="index != 0 ? 'scaleBox' : ''"
+          v-for="(item, index) in components"
           :data-name="item.name"
           :id="item.id"
         >
@@ -18,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="toTop" @click="backTop" v-show="showToTop">
+    <div class="toTop" @click="backTop" ref="showToTopRef">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -67,6 +69,7 @@ import Swiper from "swiper";
 import { onMounted, ref, type Ref } from "vue";
 const containerRef: Ref = ref(null);
 const scaleBoxRef: Ref = ref(null);
+const showToTopRef: Ref = ref(null);
 const showToTop = ref(false);
 const componentMap: {
   [key: string]: typeof Part1;
@@ -119,6 +122,7 @@ function scaleToFix() {
   scaleBoxes.forEach((el) => {
     (el as HTMLElement).style.cssText = "zoom:" + scale;
   });
+  document.documentElement.style.setProperty("--scale", scale + "");
 }
 
 const backTop = () => {
@@ -141,12 +145,14 @@ const initSwiper = () => {
 
 onMounted(() => {
   scaleToFix();
-  initSwiper();
+  // initSwiper();
   (containerRef.value as HTMLElement).addEventListener("scroll", (e) => {
     if ((containerRef.value as HTMLElement).scrollTop == 0) {
-      showToTop.value = false;
+      //隐藏
+      (showToTopRef.value as HTMLElement).style.opacity = "0";
     } else {
-      showToTop.value = true;
+      //显示
+      (showToTopRef.value as HTMLElement).style.opacity = "1";
     }
   });
 });
@@ -166,6 +172,7 @@ onMounted(() => {
     transform-origin: top left;
     width: 1440px;
     box-sizing: content-box;
+    margin: auto;
     // padding: 0 200px;
   }
   .container {
@@ -177,6 +184,8 @@ onMounted(() => {
   }
   .toTop {
     position: fixed;
+    opacity: 0;
+    transition: 0.3s;
     // background-color: yellow;
     z-index: 10000;
     width: 40px;

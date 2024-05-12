@@ -30,7 +30,12 @@
       </div>
       <div class="sup-part-header">
         <div class="title">函数可视化</div>
-        <a class="play">去试玩</a>
+        <a
+          class="play"
+          href="https://cqupthub.codeghub.com/project/math/csfc/"
+          target="_blank"
+          >去试玩</a
+        >
       </div>
       <div class="main">
         <img src="@/assets/image/func.png" alt="" />
@@ -49,7 +54,7 @@
         </div>
       </div>
     </div>
-    <Swiper align="flex-start">
+    <Swiper align="start">
       <div
         class="swiper-slide"
         style="min-width: 4400px; width: 4400px; overflow: hidden"
@@ -60,7 +65,7 @@
         />
       </div>
     </Swiper>
-    <Swiper align="flex-start">
+    <Swiper align="start">
       <div
         class="swiper-slide"
         style="min-width: 2500px; width: 2500px; overflow: hidden"

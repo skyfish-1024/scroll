@@ -4,6 +4,12 @@
 }
 @import "./swiper-item.scss";
 @import "./common.scss";
+
+//全局缩放变量
+:root {
+  --scale: 1;
+}
+
 .part {
   // font-size: 48px;
   // align-items: center;

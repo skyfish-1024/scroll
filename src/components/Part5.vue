@@ -21,7 +21,7 @@
         <div class="name">{{ item.name }}</div>
       </a>
     </Swiper>
-    <Swiper align="flex-start">
+    <Swiper align="start">
       <div class="swiper-slide" style="min-width: 1950px; width: 1950px">
         <img
           src="@/assets/image/s-9.svg"

@@ -205,9 +205,11 @@ onMounted(() => {
   }
 
   .game {
-    margin-top: 140px;
+    padding-top: 140px;
     position: relative;
-
+    &#game3 {
+      padding-top: 100px;
+    }
     .main1 {
       position: relative;
       text-align: center;
