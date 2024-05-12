@@ -64,6 +64,7 @@ const swiperList: Array<{
 
 <style scoped lang="scss">
 #part5 {
+  overflow: hidden;
   .container1 {
     margin-top: 50px;
     .main {

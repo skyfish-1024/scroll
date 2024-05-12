@@ -8,7 +8,8 @@
         </p>
 
         <p class="part-top-content-p">
-          目前我平台技术团队总计研发了3种不同类型的游戏，包含编程类、益智类、答题闯关类，其中具有代表性的游戏有通过编写代码进行板块移动的编程类游戏”浮动布局：、益智类拼图游戏“电路拼图”、答题闯关类游戏“挑战理财师、数学知识类“黄金分割比”等。
+          目前我平台技术团队已完成众多可交互图像的
+          研发，如函数可视化、数据图表可视化、思维导图、流程图等，可运用在教学演示、数字教材、办公制图等领域，给教学、办公、阅读带来便捷性更高、交互性更强的用户体验。
         </p>
       </div>
     </div>
@@ -114,6 +115,7 @@ const swiperList: Array<{
 <style scoped lang="scss">
 #part3 {
   padding-bottom: 0;
+  overflow: hidden;
   .container1 {
     padding-top: 100px;
     // padding-bottom: 250px;

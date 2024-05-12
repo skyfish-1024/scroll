@@ -80,6 +80,7 @@ const swiperList: Array<{
 <style scoped lang="scss">
 #part4 {
   padding-bottom: 0;
+  overflow: hidden;
   .container1 {
     padding-top: 100px;
     .main {

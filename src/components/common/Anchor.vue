@@ -39,9 +39,12 @@ const props = defineProps({
   },
 });
 
+//当前所在版块下标
 const currentIndex = ref(0);
+//与视口相交的元素集合
 const visibleEl = new Map();
 
+//点击导航栏，滑动到对应位置
 function clickNav(id: string, index: number) {
   let el = document.getElementById(id);
   el?.scrollIntoView({
@@ -51,6 +54,7 @@ function clickNav(id: string, index: number) {
   });
 }
 
+//创建观察器
 const ob = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -60,6 +64,7 @@ const ob = new IntersectionObserver(
         visibleEl.delete(entry.target.id);
       }
     });
+    //记录元素均在视口内的元素下标
     let full: Array<number> = [];
     let targetIndex = 99;
     visibleEl.forEach((entry) => {
@@ -71,6 +76,7 @@ const ob = new IntersectionObserver(
         full.push(index);
       }
     });
+    //选取视口内最小的下标元素
     currentIndex.value = full.length ? Math.min(...full) : targetIndex;
   },
   {
@@ -79,6 +85,7 @@ const ob = new IntersectionObserver(
   }
 );
 
+//观察元素
 function initOB() {
   const parts = document.getElementsByClassName(props.selector);
   let i = 0;
@@ -113,6 +120,7 @@ nextTick(() => {
         margin-top: 5px;
       }
     }
+    //纵向样式
     &.vertical {
       display: flex;
       align-items: center;
@@ -156,6 +164,7 @@ nextTick(() => {
         }
       }
     }
+    //横向样式
     &.horizontal {
       display: flex;
       gap: 40px;

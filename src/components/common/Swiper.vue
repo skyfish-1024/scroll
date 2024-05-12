@@ -1,5 +1,7 @@
 <template>
+  <!-- 轮播组件 滑轨 -->
   <div class="swiper" ref="swiperRef">
+    <!--轮播容器 滑块 -->
     <div class="swiper-wrapper" ref="trackRef">
       <slot></slot>
     </div>
@@ -15,49 +17,60 @@ const props = defineProps({
   },
 });
 
+let pc = window.innerWidth > 780;
 const trackRef = ref(null);
 const swiperRef = ref(null);
 
+//对齐方式，对应的值
 let AlignMap = {
   start: "flex-start",
   center: "center",
   end: "flex-end",
 };
+//初始化swiper  可封装成对象
 function initSwiper(container: HTMLElement, align = "center") {
   if (!container) {
     return;
   }
-  //设置对齐
+  //设置对齐样式
   container.style.justifyContent = AlignMap[align] || "center";
-  let children = trackRef.value.children;
 
+  //用swiper-wrapper-slide包裹子元素，劫持事件，在滑动过程中禁用事件，如点击事件
+  let children = trackRef.value.children;
   let newChildren: Array<Node> = [];
   while (children.length) {
     let div = document.createElement("div");
-
     div.appendChild(children[0]);
+    div.tagName;
+    if (children[0]?.tagName == "A") {
+      children[0].addEventListener("click", () => {
+        console.log("ff");
+      });
+    }
     div.classList.add("swiper-wrapper-slide");
     newChildren.push(div);
-    // div.append();
   }
   newChildren.forEach((child) => {
     trackRef.value.append(child);
   });
 
-  // 绑定事件
+  // 绑定滑动相关事件
   initEvents(container, align);
 }
 
-let translateX = 0;
-let mousedownX = 0;
-let flag = false;
-let preX = 0;
-let perTime = 0;
-let v: number = 0;
+let translateX = 0; //鼠标按下时的位移距离
+let mousedownX = 0; //鼠标按下的x坐标
+let flag = false; //鼠标是否按下的标志，false不响应mousemove事件，及不滑动
+let preX = 0; //鼠标上一次位置的坐标x
+let perTime = 0; //鼠标上一次的时间戳
+let v: number = 0; //鼠标移动速度
+
+//位移临界值
 let options = {
   minTranslateX: 0,
   maxTranslateX: 0,
 };
+//是否在位移中
 let moved = false;
 
 //定义移动函数
@@ -69,19 +82,29 @@ function move(dx: number) {
   } else if (nextTranslateX > options.maxTranslateX) {
     nextTranslateX = options.maxTranslateX;
   }
+  //滑动
   trackRef.value.style.transform = `translateX(${nextTranslateX}px)`;
 }
 
-function mousedownHandler(e: MouseEvent | TouchEvent) {
-  e.preventDefault();
-  let clientX = 0;
-  moved = false;
+//兼容移动端
+function getClientX(e: MouseEvent | TouchEvent) {
   if ((e as MouseEvent)?.clientX) {
-    clientX = (e as MouseEvent).clientX;
+    return (e as MouseEvent).clientX;
   } else {
-    clientX = (e as TouchEvent).touches[0].clientX;
+    return (e as TouchEvent).touches[0].clientX;
   }
+}
+
+function mousedownHandler(e: MouseEvent | TouchEvent) {
+  if (pc) {
+    e.preventDefault();
+  }
+
+  let clientX = getClientX(e);
+  moved = false;
+
   trackRef.value.style.cursor = "grabbing";
+  //清除之前的动画过渡效果
   (trackRef.value as HTMLElement).style.transition = "none";
 
   //记录当前初始位移
@@ -95,7 +118,7 @@ function mousedownHandler(e: MouseEvent | TouchEvent) {
 }
 
 function mouseupHandler(e: MouseEvent | TouchEvent) {
-  e.preventDefault();
+  // e.preventDefault();
   trackRef.value.style.cursor = "grab";
   flag = false;
   if (v == 0) {
@@ -124,18 +147,16 @@ function mouseupHandler(e: MouseEvent | TouchEvent) {
   v = 0;
 }
 function mousemoveHandler(e: MouseEvent | TouchEvent) {
-  e.preventDefault();
+  if (pc) {
+    e.preventDefault();
+  }
   moved = true;
   if (!flag) {
     return;
   }
-  let clientX = 0;
-  if ((e as MouseEvent)?.clientX) {
-    clientX = (e as MouseEvent).clientX;
-  } else {
-    clientX = (e as TouchEvent).touches[0].clientX;
-  }
+  let clientX = getClientX(e);
 
+  //记录当前鼠标位置信息
   let curX = clientX;
   let curTime = new Date().getTime();
   v = (curX - preX) / (curTime - perTime);
@@ -145,14 +166,15 @@ function mousemoveHandler(e: MouseEvent | TouchEvent) {
   move(dx);
 }
 function handleClick(e: PointerEvent) {
-  if (moved) {
-    e.stopPropagation();
+  if (pc) {
     e.preventDefault();
+  }
+  if (moved) {
+    // e.stopPropagation();
+    // e.preventDefault();
   } else {
     moved = false;
   }
-
-  // console.log(e);
 }
 
 function initEvents(container: HTMLElement, align = "center") {
@@ -181,7 +203,7 @@ function initEvents(container: HTMLElement, align = "center") {
       options.minTranslateX = 0;
       break;
   }
-  //初始化位移及其他参数-->函数闭包
+  //初始化位移及其他参数
   trackRef.value.style.transform = "translateX(0px)";
   trackRef.value.addEventListener("mousedown", mousedownHandler);
   trackRef.value.addEventListener("mouseup", mouseupHandler);
@@ -196,10 +218,14 @@ function initEvents(container: HTMLElement, align = "center") {
   trackRef.value.addEventListener("touchmove", mousemoveHandler);
   trackRef.value.addEventListener("touchend", mouseupHandler);
   trackRef.value.addEventListener("click", handleClick);
+  trackRef.value.addEventListener("tap", handleClick);
 }
 
 onMounted(() => {
   initSwiper(swiperRef.value, props.align);
+  window.addEventListener("resize", () => {
+    pc = window.innerWidth > 780;
+  });
 });
 </script>
 <style lang="scss">
@@ -211,27 +237,18 @@ onMounted(() => {
     display: flex;
     width: fit-content;
     gap: 20px;
-    // user-select: none;
     cursor: grabbing;
-    // user-select: none;
-
-    // overflow-x: auto;
-    // overflow-y: visible;
     .swiper-wrapper-slide {
       width: fit-content;
-      height: fit-content;
       position: relative;
-      &:after {
-        // position: absolute;
-        content: "";
-        display: block;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        background-color: red;
-      }
+      // &::after {
+      //   content: "";
+      //   position: absolute;
+      //   background-color: red;
+      //   top: 0;
+      //   height: 100%;
+      //   width: 100%;
+      // }
     }
   }
 }

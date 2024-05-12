@@ -190,6 +190,7 @@ function initOB() {
     ob.observe(part);
   }
 }
+
 onMounted(() => {
   initOB();
 });
@@ -254,7 +255,7 @@ onMounted(() => {
     .icon1 {
       position: absolute;
       left: 400px;
-      top: -50px;
+      top: 90px;
     }
     .icon2 {
       position: absolute;
@@ -262,7 +263,7 @@ onMounted(() => {
       width: 200px;
       overflow: hidden;
       left: -200px;
-      top: -40px;
+      top: 20px;
       height: 500px;
       img {
         position: absolute;
@@ -277,7 +278,7 @@ onMounted(() => {
       overflow: visible;
       left: -280px;
       bottom: -100px;
-      height: 290px;
+      height: 390px;
       overflow: hidden;
       // background-color: red;
       img {

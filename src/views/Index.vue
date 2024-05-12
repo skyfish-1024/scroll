@@ -70,7 +70,6 @@ import { onMounted, ref, type Ref } from "vue";
 const containerRef: Ref = ref(null);
 const scaleBoxRef: Ref = ref(null);
 const showToTopRef: Ref = ref(null);
-const showToTop = ref(false);
 const componentMap: {
   [key: string]: typeof Part1;
 } = {
@@ -81,6 +80,7 @@ const componentMap: {
   part5: Part5,
 };
 
+//组件列表
 const components: Array<{
   id: string;
   name: string;
@@ -113,15 +113,20 @@ const components: Array<{
   },
 ];
 
+//容器宽度-ui设计稿宽度
 const containerWidth = 1460;
 
 function scaleToFix() {
   if (window.innerWidth > containerWidth) return;
+  //获取需要缩放的容器盒子
   let scaleBoxes = document.querySelectorAll("div.scaleBox");
+  //计算缩放比例
   let scale = window.innerWidth / containerWidth;
   scaleBoxes.forEach((el) => {
     (el as HTMLElement).style.cssText = "zoom:" + scale;
   });
+  document.body.style.overflow = "hidden";
+  //设置全局缩放css变量，后续需要直接var(--scale)可获取
   document.documentElement.style.setProperty("--scale", scale + "");
 }
 
@@ -135,17 +140,9 @@ const backTop = () => {
   }
 };
 
-const initSwiper = () => {
-  new Swiper(".swiper", {
-    slidesPerView: "auto",
-    freeMode: true,
-    grabCursor: true,
-  });
-};
-
 onMounted(() => {
   scaleToFix();
-  // initSwiper();
+  //监听滚动条事件，显示/隐藏toTop按钮
   (containerRef.value as HTMLElement).addEventListener("scroll", (e) => {
     if ((containerRef.value as HTMLElement).scrollTop == 0) {
       //隐藏
@@ -170,16 +167,14 @@ onMounted(() => {
   overflow: hidden;
   .scaleBox {
     transform-origin: top left;
-    width: 1440px;
+    width: 1440px; //和 containerWidth = 1460; 保持一致
     box-sizing: content-box;
     margin: auto;
-    // padding: 0 200px;
   }
   .container {
     width: fit-content;
     position: relative;
     flex: 1;
-    // overflow: scroll;
     overflow-x: hidden;
   }
   .toTop {
